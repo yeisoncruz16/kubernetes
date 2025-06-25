@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-deployment
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-deployment
+    spec:
+      containers:
+        - image: nginx
+          name: nginx-deployment-container
+          ports:
+          - containerPort: 80
+          env:
+          - name: APP_NAME
+            value: cloudcamp-web
+          - name: ENV_NAME
+            value: development
