@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  WELCOME_MESSAGE: "Bootcamp DevOps CloudCamp 2"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-cm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-cm
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-cm
+    spec:
+      containers:
+        - image: nginx
+          name: nginx-cm-container
+          env:
+            - name: WELCOME_MESSAGE
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: WELCOME_MESSAGE
+
